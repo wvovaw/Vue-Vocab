@@ -1,4 +1,4 @@
-# learn-words-app
+# Vocabulary app
 
 ## Project setup
 ```

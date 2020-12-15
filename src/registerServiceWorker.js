@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-
+// PWA SUPPORT
 import { register } from "register-service-worker";
 
 if (process.env.NODE_ENV === "production") {

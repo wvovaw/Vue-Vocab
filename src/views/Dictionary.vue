@@ -1,14 +1,19 @@
 <template>
-  <div class="dictionary">
-    <h1>This is an Dictionary page</h1>
+  <div class="dictionary-page">
+    <EmptyDictionaryState v-if="!dictionary"></EmptyDictionaryState>
   </div>
 </template>
 
 <script>
+import EmptyDictionaryState from "../components/EmptyDictionaryState";
 
 export default {
   name: "Dictionary",
-  components: {
+  components: { EmptyDictionaryState },
+  computed: {
+    dictionary() {
+      return this.$store.getters.dictionary;
+    }
   }
 };
 </script>

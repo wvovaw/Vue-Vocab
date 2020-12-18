@@ -1,5 +1,5 @@
 <template>
-  <div class="learning-block md-scrollbar" style="border: black 1px solid;">
+  <div class="learning-block">
     <WordCard />
   </div>
 </template>
@@ -15,7 +15,9 @@ export default {
 
 <style scoped lang="scss">
 .learning-block {
-  padding: 30px;
+  display: flex;
+  justify-content: center;
+  // padding: 30px;
   position: fixed;
   transform: translate(-50%, -50%);
   top: 50%;

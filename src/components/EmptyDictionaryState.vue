@@ -1,12 +1,11 @@
 <template>
   <div>
-    <AddWordDialog @closeDialog="showDialog = false" />
     <md-empty-state
       md-icon="book"
       md-label="Add some words"
       md-description="Your dictionary is empty. Add new one."
     >
-      <md-button class="md-primary md-raised" @click="showDialog = true"
+      <md-button class="md-primary md-raised" @click="toggleDialog"
         >Add word</md-button
       >
     </md-empty-state>
@@ -14,29 +13,11 @@
 </template>
 
 <script>
-import AddWordDialog from "../components/AddWordDialog";
 export default {
   name: "EmptyDictionaryState",
-  components: { AddWordDialog },
-  data() {
-    return {
-      showDialog: false
-    };
-  },
   methods: {
-    destroyed() {
-      if (this.date && this.date.destroy) {
-        this.date.destroy();
-      }
-      if (this.chips && this.chips.destroy) {
-        this.chips.destroy();
-      }
-      if (this.translation && this.translation.destroy) {
-        this.translation.destroy();
-      }
-      if (this.showDialog && this.showDialog.destroy) {
-        this.showDialog.destroy();
-      }
+    toggleDialog() {
+      this.$emit("toggleDialog");
     }
   }
 };

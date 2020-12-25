@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 <template>
   <div class="dictionary-page">
     <AddWordDialog @toggleDialog="toggleDialog" />
@@ -7,48 +6,39 @@
       v-if="dictionary.length === 0"
     />
     <div v-else>
-      <div class="table-header">
-        <div class="table-header-controls">
-          <div class="md-headline">My dictionary ({{ dictionary.length }})</div>
-          <div v-if="!$isMobile()">
-            <md-button @click="toggleDialog" class="md-raised"
-              >Add word</md-button
-            >
-            <router-link to="/learn">
-              <md-button class="md-raised">Learn words</md-button>
-            </router-link>
+      <md-table
+        v-model="foundWords"
+        md-card
+        md-fixed-heade
+        @md-selected="onSelect"
+      >
+        <md-table-toolbar>
+          <div class="md-toolbar-section-start">
+            <h1 class="md-title">My dictionary ({{ dictionary.length }})</h1>
           </div>
-        </div>
-        <div class="table-header-filter">
-          <md-field md-clearable>
-            <label>Search</label>
-            <md-input v-model="searchWord" md-clearable></md-input>
+
+          <md-field md-clearable class="md-toolbar-section-end">
+            <md-input
+              placeholder="Search"
+              v-model="searchFilter"
+              @input="searchOnTable"
+            />
           </md-field>
-        </div>
-      </div>
-      <md-table>
-        <md-table-row>
-          <md-table-head class="checkbox-column">
-            <md-checkbox v-model="choosedWords" value="all" />
-          </md-table-head>
-          <md-table-head>Word</md-table-head>
-          <md-table-head>Actions</md-table-head>
-        </md-table-row>
-        <md-table-row v-for="entry in dictionary" v-bind:key="entry.entryId">
-          <md-table-cell class="checkbox-column"
-            ><md-checkbox v-model="choosedWords" value="entry"
-          /></md-table-cell>
-          <md-table-cell>
-            <div style="display: flex; flex-direction: column;">
-              <div class="md-body-2">{{ entry.wordPair.word }}</div>
-              <div class="md-caption">{{ entry.wordPair.translation }}</div>
-            </div>
-          </md-table-cell>
-          <md-table-cell
-            ><md-button class="md-icon-button"
-              ><md-icon>delete</md-icon></md-button
-            ></md-table-cell
-          >
+        </md-table-toolbar>
+
+        <md-table-row
+          slot="md-table-row"
+          slot-scope="{ item }"
+          md-selectable="multiple"
+          md-auto-select
+        >
+          <!-- not needed with onselect(item, { isFast, $event }) API -->
+          <md-table-cell md-label="Word" md-sort-by="word">{{
+            item.wordPair.word
+          }}</md-table-cell>
+          <md-table-cell md-label="Translation" md-sort-by="translation">{{
+            item.wordPair.translation
+          }}</md-table-cell>
         </md-table-row>
       </md-table>
     </div>
@@ -64,16 +54,37 @@ import EmptyDictionaryState from "../components/EmptyDictionaryState";
 import AddWordDialog from "../components/AddWordDialog";
 import SpeedDial from "../components/SpeedDial";
 
+// import { get } from "lodash";
+
+const toLower = text => {
+  return text.toString().toLowerCase();
+};
+
+const searchByWord = (items, term) => {
+  if (term) {
+    return items.filter(item =>
+      toLower(item.wordPair.word).includes(toLower(term))
+    );
+  }
+
+  return items;
+};
+
 export default {
   name: "Dictionary",
   data() {
     return {
-      showDialog: false
+      showDialog: false,
+      searchFilter: "",
+      foundWords: []
     };
   },
   methods: {
     toggleDialog() {
       this.showDialog = !this.showDialog;
+    },
+    searchOnTable() {
+      this.foundWords = searchByWord(this.dictionary, this.searchFilter);
     }
   },
   components: { EmptyDictionaryState, AddWordDialog, SpeedDial },
@@ -81,33 +92,14 @@ export default {
     dictionary() {
       return this.$store.getters.dictionary;
     }
+  },
+  created() {
+    this.foundWords = this.dictionary;
   }
 };
 </script>
 <style scope lang="scss">
-.table-header {
-  padding: 10px;
-}
-.table-header-controls {
-  display: flex;
-  justify-content: space-between;
-}
-.table-header-filter {
-  display: flex;
-  justify-content: space-around;
-}
-.md-checkbox {
-  margin-top: 8px;
-}
 .md-body-2 {
   font-size: 1.5em;
-}
-.checkbox-column {
-  max-width: 65px;
-  // padding-left: 10px;
-}
-.word-column {
-}
-.actions-column {
 }
 </style>

@@ -14,4 +14,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+body {
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+</style>

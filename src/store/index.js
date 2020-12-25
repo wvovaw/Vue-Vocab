@@ -13,12 +13,22 @@ export default new Vuex.Store({
     addWord(state, entry) {
       state.dictionary.push(entry);
       localStorage.setItem("dictionary", JSON.stringify(state.dictionary));
+    },
+    removeWords(state, newDictionary) {
+      state.dictionary = newDictionary;
+      localStorage.setItem("dictionary", JSON.stringify(state.dictionary));
     }
   },
   actions: {
     addWord({ commit }, entry) {
-      entry.entryId = new Date().getTime();
+      entry.id = new Date().getTime();
       commit("addWord", entry);
+    },
+    removeWords({ commit }, ids) {
+      let newDictionary = this.state.dictionary.filter(
+        entry => !ids.includes(entry.id)
+      );
+      commit("removeWords", newDictionary);
     }
   },
   getters: {

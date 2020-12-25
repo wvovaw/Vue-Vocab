@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       entry: {
-        entryId: null,
+        id: null,
         wordPair: {
           word: "",
           translation: ""
@@ -44,7 +44,7 @@ export default {
         this.$store.dispatch("addWord", this.entry);
       // else {} Else highlight empty fields etc.
       this.entry = {
-        entryId: null,
+        id: null,
         wordPair: {
           word: "",
           translation: ""

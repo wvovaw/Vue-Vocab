@@ -6,11 +6,14 @@
       <form novalidate class="md-layout" @submit.prevent="saveData">
         <md-field>
           <label>Word</label>
-          <md-input v-model="entry.wordPair.word"></md-input>
+          <md-input ref="word" v-model="entry.wordPair.word"></md-input>
         </md-field>
         <md-field>
           <label>Translation</label>
-          <md-input v-model="entry.wordPair.translation"></md-input>
+          <md-input
+            ref="translation"
+            v-model="entry.wordPair.translation"
+          ></md-input>
         </md-field>
         <md-dialog-actions>
           <md-button class="md-primary" @click="closeDialog">Cancel</md-button>

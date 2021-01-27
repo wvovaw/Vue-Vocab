@@ -15,10 +15,10 @@ const routes = [
     component: () => import("../views/Dictionary.vue")
   },
   {
-    path: "/learn",
-    name: "Learn",
-    component: () => import("../views/Learn.vue")
-  },
+    path: "/practice",
+    name: "Practice",
+    component: () => import("../views/Practice.vue")
+  }
 ];
 
 const router = new VueRouter({

@@ -1,11 +1,12 @@
 <template>
   <div>
-    <!-- TODO: Change behaviour on ESC and out of border click -->
+    <!-- FIXME: Errors on ESC and out of border click -->
     <md-dialog :md-active.sync="this.$parent.showDialog">
       <md-dialog-title>Add word</md-dialog-title>
       <form novalidate class="md-layout" @submit.prevent="saveData">
         <md-field>
           <label>Word</label>
+          <!-- TODO: Autofocus when dialog opens -->
           <md-input ref="word" v-model="entry.wordPair.word"></md-input>
         </md-field>
         <md-field>
@@ -29,6 +30,8 @@ export default {
   name: "AddWordDialog",
   data() {
     return {
+      // TODO: Implement word progress
+      // TODO: Implement translation list
       entry: {
         id: null,
         wordPair: {
@@ -43,9 +46,19 @@ export default {
       this.$emit("toggleDialog");
     },
     saveData() {
-      if (this.entry.wordPair.word && this.entry.wordPair.translation)
+      if (this.entry.wordPair.word && this.entry.wordPair.translation) {
+        // Capitalize 1st letters
+        this.entry.wordPair.word =
+          this.entry.wordPair.word.charAt(0).toUpperCase() +
+          this.entry.wordPair.word.slice(1).toLowerCase();
+
+        this.entry.wordPair.translation =
+          this.entry.wordPair.translation.charAt(0).toUpperCase() +
+          this.entry.wordPair.translation.slice(1).toLowerCase();
+
         this.$store.dispatch("addWord", this.entry);
-      // else {} Else highlight empty fields etc.
+      }
+      // TODO: Else Highlight empty fields etc.
       this.entry = {
         id: null,
         wordPair: {

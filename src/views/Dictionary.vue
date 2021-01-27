@@ -15,9 +15,9 @@
       </h1>
       <md-table
         v-model="foundWords"
-        md-card
         md-sort="Word"
         @md-selected="onSelect"
+        md-card
       >
         <md-table-toolbar>
           <md-field md-clearable class="md-toolbar-section-start">
@@ -149,7 +149,5 @@ export default {
 <style scope lang="scss">
 .md-body-2 {
   font-size: 1.5em;
-}
-.md-table-toolbar {
 }
 </style>

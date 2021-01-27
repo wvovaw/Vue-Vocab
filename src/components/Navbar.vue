@@ -9,8 +9,8 @@
       <md-button class="md-primary">Dictionary</md-button>
     </router-link>
 
-    <router-link to="/learn" exact active-class="md-active">
-      <md-button class="md-primary">Learn</md-button>
+    <router-link to="/practice" exact active-class="md-active">
+      <md-button class="md-primary">Practice</md-button>
     </router-link>
   </md-toolbar>
 </template>

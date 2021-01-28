@@ -1,6 +1,6 @@
 <template>
   <div class="dictionary-page">
-    <AddWordDialog @toggleDialog="toggleDialog" />
+    <AddWordDialog ref="dialog" @toggleDialog="toggleDialog" />
     <SpeedDial
       v-if="$isMobile() && dictionary.length !== 0"
       @toggleDialog="toggleDialog"
@@ -122,6 +122,12 @@ export default {
     toggleDialog() {
       this.searchFilter = "";
       this.showDialog = !this.showDialog;
+      // Focus on the 1st input field
+      if (this.showDialog) {
+        setTimeout(() => {
+          document.getElementById("focusme").focus();
+        }, 200);
+      }
     },
     searchOnTable() {
       this.foundWords = searchByWord(this.dictionary, this.searchFilter);

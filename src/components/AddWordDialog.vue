@@ -9,8 +9,12 @@
     <form novalidate class="md-layout" @submit.prevent="saveData">
       <md-field :class="isInvalid(emptyWord)">
         <label>Word</label>
-        <!-- TODO: Autofocus when dialog opens -->
-        <md-input ref="word" v-model="entry.wordPair.word" required></md-input>
+        <md-input
+          ref="word"
+          id="focusme"
+          v-model="entry.wordPair.word"
+          required
+        ></md-input>
       </md-field>
       <md-field :class="isInvalid(emptyTranslation)">
         <label>Translation</label>

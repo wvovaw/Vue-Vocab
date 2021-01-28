@@ -146,7 +146,6 @@ export default {
     },
     removeWords() {
       this.$store.dispatch("removeWords", this.selected);
-      // TODO: reload table
       this.foundWords = searchByWord(this.dictionary, "");
     }
   }

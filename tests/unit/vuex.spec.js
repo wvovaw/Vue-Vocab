@@ -9,7 +9,7 @@ const entry = {
   }
 };
 
-// FIXME:
+// FIXME: Get vuex tests working
 //  ReferenceError: localStorage is not defined
 describe("Vuex test", () => {
   it("Adds 1 word to the dictionary. store.dictionary.length = 1", async () => {

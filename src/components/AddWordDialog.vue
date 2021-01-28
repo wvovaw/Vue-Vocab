@@ -37,8 +37,7 @@ export default {
   name: "AddWordDialog",
   data() {
     return {
-      // TODO: Implement word progress
-      // TODO: Implement translation list
+      // TODO: Implement word progress; Implement translation list
       entry: {
         id: null,
         wordPair: {

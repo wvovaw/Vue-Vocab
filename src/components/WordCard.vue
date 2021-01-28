@@ -3,12 +3,18 @@
     <h3>{{ word }}</h3>
     <md-field>
       <label>Translation</label>
-      <md-input ref="translation" v-model="userTranslation" />
+      <md-input
+        id="focusme"
+        ref="translation"
+        v-model="userTranslation"
+        v-on:keyup.enter="enterPressed"
+        required
+      />
     </md-field>
     <md-button @click="skipWord">Next</md-button>
-    <!-- TODO: Make check button inactive/active depending on input content -->
-    <!-- TODO: Add ENTER key -->
-    <md-button @click="checkAnswer">Check</md-button>
+    <md-button :disabled="userTranslation.length < 1" @click="checkAnswer"
+      >Check</md-button
+    >
     <md-snackbar
       :md-position="snack.position"
       :md-duration="snack.duration"
@@ -16,7 +22,7 @@
       md-persistent
     >
       <span>{{ snack.message }}</span>
-      <md-button class="md-primary" @click="nextWord">Ok</md-button>
+      <md-button class="md-primary" @click="nextWord">Next</md-button>
     </md-snackbar>
   </div>
 </template>
@@ -28,7 +34,8 @@ export default {
   data() {
     return {
       userTranslation: "",
-      answerStatus: false,
+      isAnswerCorrect: false,
+      checkStatus: 0,
       snack: {
         show: false,
         duration: Infinity, // Infinity / x ms
@@ -38,31 +45,51 @@ export default {
     };
   },
   methods: {
+    isInvalid(invalidFlag) {
+      return {
+        "md-invalid": invalidFlag
+      };
+    },
+    enterPressed() {
+      if (this.userTranslation.length < 1) return;
+      if (this.checkStatus === 0) {
+        this.checkStatus = 1;
+        this.checkAnswer();
+      } else if (this.checkStatus === 1) {
+        this.checkStatus = 0;
+        this.nextWord();
+      }
+    },
     checkAnswer() {
       if (
         this.userTranslation.toLowerCase() === this.translation.toLowerCase()
       ) {
         this.snack.message = "Correct!";
         this.snack.show = true;
-        this.answerStatus = true; // correct answer
+        this.isAnswerCorrect = true; // correct answer
       } else {
         this.snack.message =
           "Incorrect! The correct translation is " + this.translation;
         this.snack.show = true;
-        this.answerStatus = false; // wrong answer
+        this.isAnswerCorrect = false; // wrong answer
       }
     },
     skipWord() {
       this.snack.message = "The translation is " + this.translation;
       this.snack.show = true;
-      this.answerStatus = false; // wrong answer
+      this.isAnswerCorrect = false; // wrong answer
     },
     // Rotate the list of words
     nextWord() {
-      this.$emit("answer", this.answerStatus);
+      this.$emit("answer", this.isAnswerCorrect);
       this.userTranslation = "";
       this.snack.show = false;
     }
+  },
+  mounted: function() {
+    setTimeout(() => {
+      document.getElementById("focusme").focus();
+    }, 200);
   }
 };
 </script>

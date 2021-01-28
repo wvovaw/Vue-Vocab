@@ -1,5 +1,14 @@
 <template>
   <div class="practice-block">
+    <md-dialog-confirm
+      :md-active.sync="showDialog"
+      :md-title="dialog.title"
+      :md-content="dialog.content"
+      md-confirm-text="Continue pactice"
+      md-cancel-text="Go home"
+      @md-cancel="$router.push('/')"
+      @md-confirm="refreshPractice"
+    />
     <p>Progress: {{ progress }}</p>
     <WordCard
       :word="wordPair.word"
@@ -35,50 +44,58 @@ export default {
   data() {
     return {
       progress: 0,
-      index: 0,
-      wordPair: {}
+      practiceList: this.getPracticeList(),
+      wordPair: {},
+      showDialog: false,
+      // TODO: Show title and content depending on results
+      dialog: {
+        title: "Default title",
+        content: "Default content"
+      }
     };
   },
-  computed: {
-    wordsToTrain() {
+  mounted: function() {
+    this.$nextTick(function() {
+      this.wordPair = this.practiceList[0].wordPair;
+    });
+  },
+  methods: {
+    // TODO: After word progress get implemented, rework this
+    getPracticeList() {
       let l =
         this.$store.getters.dictionary.length < 10
           ? this.$store.getters.dictionary.length
           : 10;
       return randomItems(this.$store.getters.dictionary, l);
-    }
-  },
-  mounted: function() {
-    this.$nextTick(function() {
-      this.wordPair = this.wordsToTrain[0].wordPair;
-    });
-  },
-  methods: {
+    },
+    refreshPractice() {
+      this.progress = 0;
+      this.practiceList = this.getPracticeList();
+      this.wordPair = this.practiceList[0].wordPair;
+    },
     onAnswer(status) {
       if (status === false) {
-        // TODO: Increase a word progress if user answers correct
-        this.wordsToTrain.push(this.wordsToTrain.splice(this.index, 1)[0]); // move element in the end of attay
-        this.wordPair = this.wordsToTrain[0].wordPair;
+        this.practiceList.push(this.practiceList.splice(0, 1)[0]); // move element in the end of attay
+        this.wordPair = this.practiceList[0].wordPair;
       } else if (status === true) {
+        // TODO: Increase a word progress if user answers correct
         this.progress += 1;
-        this.wordsToTrain.shift(); // Remove wordsToTrain[0]
-        if (this.wordsToTrain.length == 0) {
-          window.alert("Finish! You misstaken on words: ", this.misstakes);
-          // TODO: Redirect or show stats
-        } else this.wordPair = this.wordsToTrain[0].wordPair;
+        this.practiceList.shift(); // Remove practiceList[0]
+        if (this.practiceList.length == 0) {
+          this.showDialog = true; // Show finish dialog
+        } else this.wordPair = this.practiceList[0].wordPair;
       }
     }
   }
 };
 </script>
-
+<!-- TODO: Make practice page look good -->
 <style scoped lang="scss">
 .practice-block {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 30px;
-  border: 1px black solid;
   position: fixed;
   transform: translate(-50%, -50%);
   top: 50%;

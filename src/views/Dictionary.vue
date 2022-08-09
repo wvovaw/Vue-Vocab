@@ -100,7 +100,7 @@ const searchByWord = (items, term) => {
 };
 
 export default {
-  name: "Dictionary",
+  name: "DictionaryPageView",
   components: { EmptyDictionaryState, AddWordDialog, SpeedDial },
   data() {
     return {

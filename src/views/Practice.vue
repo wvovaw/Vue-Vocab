@@ -36,7 +36,7 @@ const randomItems = (arr, count) =>
     )[1];
 
 export default {
-  name: "Practice",
+  name: "PracticePageView",
   components: { WordCard },
   /*
    * Take 10 random or definit wordpairs from the dictionary
@@ -78,7 +78,7 @@ export default {
         this.practiceList.push(this.practiceList.splice(0, 1)[0]); // move element in the end of attay
         this.wordPair = this.practiceList[0].wordPair;
       } else if (status === true) {
-        // TODO: Increase a word progress if user answers correct
+        // TODO: Increase a word learning progress in learnign model if user answers correct
         this.progress += 1;
         this.practiceList.shift(); // Remove practiceList[0]
         if (this.practiceList.length == 0) {

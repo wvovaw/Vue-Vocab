@@ -37,7 +37,7 @@ export default {
   name: "AddWordDialog",
   data() {
     return {
-      // TODO: Implement word progress; Implement translation list
+      // TODO: Implement <striked>word progress</striked> Learn progress model; Implement translation list
       entry: {
         id: null,
         wordPair: {
@@ -51,6 +51,9 @@ export default {
   },
   methods: {
     isInvalid(invalidFlag) {
+      /* TODO: Check how many times the method is being called
+          maybe use computed instead
+      */
       return {
         "md-invalid": invalidFlag
       };

@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: "Index",
+  name: "IndexPageView",
   components: {}
 };
 </script>
